@@ -18,7 +18,7 @@ services:
     ports:
       - "33061:3306"
   redis:
-    image: redis:4.0-alpine
+    image: redis:6.2.12-alpine
     command: redis-server
     volumes:
       - redis:/data
@@ -30,16 +30,15 @@ services:
     build: ../
     command: bundle exec rails s -p 3000 -e development -b '0.0.0.0'
     environment:
-     DB_USERNAME: root
-     DB_PASSWORD: root
-     DB_NAME: ecs_mysql_application_db
-     DB_PORT: 3306
-     DB_HOST: db
-     RAILS_ENV: development
-     RAILS_MAX_THREADS: 5
-     REDIS_HOST: redis
-     REDIS_PORT: 6379
-     BUNDLE_PATH: /bundle
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      DB_NAME: ecs_mysql_application_db
+      DB_PORT: 3306
+      DB_HOST: db
+      RAILS_ENV: development
+      RAILS_MAX_THREADS: 5
+      BUNDLE_PATH: /bundle
+      REDIS_URL: "redis://redis:6379/12"
     volumes:
       - ../:/ecs-app
       - bundle:/bundle
@@ -50,16 +49,16 @@ services:
       - "redis"
   sidekiq:
     build: ../
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -C /ecs-app/config/sidekiq.yml
     volumes:
       - ../:/ecs-app
     environment:
       RAILS_ENV: development
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
+      REDIS_URL: "redis://redis:6379/12"
     depends_on:
+      - "db"
       - "redis"
 volumes:
   app_data: {}
-  bundle:
-  redis:
+  bundle: {}
+  redis: {}
