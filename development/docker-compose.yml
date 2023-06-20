@@ -8,13 +8,13 @@ services:
      MYSQL_ROOT_PASSWORD: root
      MYSQL_USERNAME: root
      MYSQL_PASSWORD: root
-        - '3306:3306'
+      - '3306:3306'
     expose:
       - '3306'
     volumes:
       - 'app_data:/var/lib/mysql'
     logging:
-            driver: none
+      driver: none
     ports:
       - "33061:3306"
   redis:
@@ -25,7 +25,7 @@ services:
     ports:
       - 6379
     logging:
-            driver: none
+      driver: none
   web:
     build: ../
     command: bundle exec rails s -p 3000 -e development -b '0.0.0.0'
@@ -47,6 +47,17 @@ services:
       - "3000:3000"
     depends_on:
       - "db"
+      - "redis"
+  sidekiq:
+    build: ../
+    command: bundle exec sidekiq
+    volumes:
+      - ../:/ecs-app
+    environment:
+      RAILS_ENV: development
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
       - "redis"
 volumes:
   app_data: {}
