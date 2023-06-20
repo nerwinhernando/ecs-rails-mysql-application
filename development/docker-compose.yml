@@ -11,7 +11,7 @@ services:
     expose:
       - '3306'
     volumes:
-      - db:/var/run/mysqld
+      - 'app_data:/var/lib/mysql'
     logging:
             driver: none
     ports:
@@ -48,6 +48,6 @@ services:
       - "db"
       - "redis"
 volumes:
-  db:
+  app_data: {}
   bundle:
   redis:
