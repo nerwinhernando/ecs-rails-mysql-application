@@ -31,7 +31,7 @@ services:
     environment:
      DB_USERNAME: root
      DB_PASSWORD: root
-     DB_NAME: ecs_application_db
+     DB_NAME: ecs_mysql_application_db
      DB_PORT: 3306
      DB_HOST: db
      RAILS_ENV: development
