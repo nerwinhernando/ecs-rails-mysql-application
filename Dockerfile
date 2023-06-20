@@ -1,4 +1,4 @@
-FROM ruby:2.5.1
+FROM ruby:2.7.5
 
 # install rails dependencies
 RUN apt-get clean all && apt-get update -qq && apt-get install -y build-essential libpq-dev \
