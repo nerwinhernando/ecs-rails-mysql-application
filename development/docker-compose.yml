@@ -37,7 +37,7 @@ services:
       DB_HOST: db
       RAILS_ENV: development
       RAILS_MAX_THREADS: 5
-      BUNDLE_PATH: /bundle
+      # BUNDLE_PATH: /bundle
       REDIS_URL: "redis://redis:6379/12"
     volumes:
       - ../:/ecs-app
